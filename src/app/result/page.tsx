@@ -37,7 +37,7 @@ const Page = () => {
                 <RxAvatar className="text-2xl cursor-pointer w-fit" /> */}
             </nav>
 
-            <div className="flex flex-col items-center justify-center mt-10">
+            <div className="flex flex-col items-center justify-center mt-10 mx-auto w-250 border p-4 rounded-lg shadow-lg">
                 <h1 className="text-2xl font-bold mb-4">Itinerary Summary</h1>
                 <table className="min-w-full bg-white border border-gray-300">
                     <thead>
@@ -59,8 +59,6 @@ const Page = () => {
                 </table>
                 <div className="mt-4">
                     <h2 className="text-xl font-semibold">Total Estimated Spending: ₹{res.itinerary[res.itinerary.length - 1][2]}</h2>
-
-
                 </div>
             </div>
         </div>
