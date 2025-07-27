@@ -7,7 +7,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Planner",
+  title: "CitySynapse",
   description: "Plan your trips with ease",
 };
 

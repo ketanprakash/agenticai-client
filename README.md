@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CitySynapse
 
-## Getting Started
+This project is a web application designed to help users plan their itineraries based on various preferences, including the type of plan (e.g., full day), the group (e.g., friends), number of people, inclusions (e.g., temple, zoo), budget, date, and time. After submitting the preferences, the application generates a detailed itinerary summary with estimated costs.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+* **Preference-Based Planning:** Users can input their specific requirements for a trip or outing.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Customizable Inclusions:** Add various points of interest or activities to be included in the plan.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Budget Management:** Input a budget to help the application suggest suitable activities.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **Detailed Itinerary Summary:** Get a clear breakdown of activities, timings, and estimated costs.
 
-## Learn More
+* **User-Friendly Interface:** Simple and intuitive forms for inputting preferences and viewing results.
 
-To learn more about Next.js, take a look at the following resources:
+## Screenshots
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Select Your Preferences
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+![Select Your Preferences](/public/images/1.png)
 
-## Deploy on Vercel
+### Itinerary Summary
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![Select Your Preferences](/public/images/2.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Usage
+
+1. On the "Select your preferences" page, fill in all the required fields such as "Type of Plan", "Type of Friends", "People", "Inclusions", "Budget", "Date", and "Time".
+
+2. Click the "Submit" button.
+
+3. The "Itinerary Summary" page will then display the generated plan.
+
+## Contributing
+
+Contributions are welcome! Please feel free to open issues or submit pull requests.
