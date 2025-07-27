@@ -1,24 +1,18 @@
 'use client'
-import Image from "next/image";
-import { RxAvatar } from "react-icons/rx";
+// import Image from "next/image";
+// import { RxAvatar } from "react-icons/rx";
 import Select from 'react-select'
 import { FaLocationArrow } from "react-icons/fa";
 import { KeyboardEventHandler, useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
-
-const components = {
-  DropdownIndicator: null,
-};
+import Image from 'next/image';
+// import { KeyboardEventHandler } from 'react';
+// Custom OpenStreetMap autocomplete
 
 interface Option {
   readonly label: string;
   readonly value: string;
 }
-
-const createOption = (label: string) => ({
-  label,
-  value: label,
-});
 
 const optionsType = [
   {
@@ -176,9 +170,63 @@ const styles = {
   }),
 }
 
+import { useEffect } from 'react';
+import Link from 'next/link';
+
 const Page = () => {
   const [inputValue, setInputValue] = useState('');
   const [value, setValue] = useState<readonly Option[]>([]);
+  const [address, setAddress] = useState('');
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [debouncedAddress, setDebouncedAddress] = useState('');
+
+  // Debounce address input
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedAddress(address);
+    }, 400); // 400ms debounce
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [address]);
+
+  // Fetch suggestions when debounced value changes
+  useEffect(() => {
+    if (debouncedAddress.length > 2) {
+      setLoading(true);
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${debouncedAddress}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSuggestions(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    } else {
+      setSuggestions([]);
+    }
+  }, [debouncedAddress]);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(event.target.value);
+  };
+
+  const handleSuggestionSelect = (suggestion: any) => {
+    setAddress(suggestion.display_name);
+    setSuggestions([]);
+  };
+
+  const createOption = (label: string) => ({
+    label,
+    value: label,
+  });
+
+  const components = {
+    DropdownIndicator: null,
+  };
+
 
   const handleKeyDown: KeyboardEventHandler = (event) => {
     if (!inputValue) return;
@@ -193,12 +241,36 @@ const Page = () => {
 
   return (
     <div className="flex flex-col min-h-full">
-      <nav className="flex items-center justify-between p-4 bg-orange-600 text-white">
+      <nav className="flex items-center justify-between p-4 bg-orange-600 text-white h-16">
         <div className="flex items-center gap-2 cursor-pointer w-fit">
-          <FaLocationArrow />
+          <div className="relative w-[250px]">
+            <input
+              type="text"
+              value={address}
+              onChange={handleInputChange}
+              placeholder="Search Location ..."
+              className="location-search-input pl-8 pr-2 py-2 rounded w-full"
+              autoComplete="off"
+            />
+            <FaLocationArrow className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+            {suggestions.length > 0 && (
+              <div className="absolute z-10 bg-white border border-gray-300 rounded w-full mt-1 shadow-lg autocomplete-dropdown-container">
+                {loading && <div className="p-2 text-gray-500">Loading...</div>}
+                {suggestions.map((suggestion) => (
+                  <div
+                    key={suggestion.place_id}
+                    className="p-2 cursor-pointer text-gray-500 hover:bg-orange-100"
+                    onClick={() => handleSuggestionSelect(suggestion)}
+                  >
+                    <span>{suggestion.display_name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <span className="text-lg font-semibold w-fit flex items-center justify-center">Planner</span>
-        <RxAvatar className="text-2xl cursor-pointer w-fit" />
+        {/* <span className="text-lg font-semibold w-fit flex items-center justify-center">Planner</span>
+        <RxAvatar className="text-2xl cursor-pointer w-fit" /> */}
       </nav>
       <h1 className="text-3xl font-medium pt-4 px-2">
         Select your preferences
@@ -260,9 +332,11 @@ const Page = () => {
           <span className="w-[200px]">Time:</span>
           <Select options={optionsTime} styles={styles} placeholder="Time" className="w-full" />
         </div>
-        <button className="bg-orange-700 cursor-pointer text-white rounded-[12px] hover:bg-orange-800 transition-colors w-full p-3">
-          Submit
-        </button>
+        <Link className="bg-orange-700 cursor-pointer text-white rounded-[12px] hover:bg-orange-800 transition-colors w-full p-3 flex flex-col" href="/result">
+          <span className='m-auto'>
+            Submit
+          </span>
+        </Link>
       </div>
     </div>
   )
